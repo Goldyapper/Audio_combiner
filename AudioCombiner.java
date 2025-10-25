@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+import com.mpatric.mp3agic.ID3v2;
+
 public class AudioCombiner {
 
     public static void combineAudioFiles(String inputFolderPath, String outputFilePath) {
@@ -14,6 +16,8 @@ public class AudioCombiner {
         }
 
         Arrays.sort(audioFiles); // in alphabetical order
+        // Get metadata from the first file
+        ID3v2 metadata = MetadataHelper.getFirstFileMetadata(audioFiles[0]);
 
 
         try {
@@ -24,7 +28,6 @@ public class AudioCombiner {
                     writer.println("file '" + mp3.getAbsolutePath().replace("\\", "/") + "'");
                 }
             }
-
             File outFile = new File(outputFilePath);
             outFile.getParentFile().mkdirs();
 
@@ -39,6 +42,13 @@ public class AudioCombiner {
             process.waitFor();
 
             listFile.delete();
+
+
+            // Apply metadata to combined file
+            if (metadata != null) {
+                MetadataHelper.applyMetadata(outputFilePath, metadata);
+            }
+
             System.out.println("Combined MP3 saved to: " + outputFilePath);
 
         } catch (Exception e) {
