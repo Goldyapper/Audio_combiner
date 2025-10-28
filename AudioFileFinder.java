@@ -37,7 +37,7 @@ public class AudioFileFinder {
 
     public static void main(String[] args) {
         String folderPath = "input/E10 - Pimlico"; 
-        List<File> shortAudioFiles = getshortAudioFiles(folderPath, 20); // 20 minutes
+        List<File> shortAudioFiles = getshortAudioFiles(folderPath, 20); // 20 minutes 
 
         if (shortAudioFiles.isEmpty()) {
             System.out.println("No audio files shorter than 20 minutes were found.");
